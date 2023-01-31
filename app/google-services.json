@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "447956817552",
+    "project_id": "caminante-final-project",
+    "storage_bucket": "caminante-final-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447956817552:android:d91408bb7ab72b6ce52a15",
+        "android_client_info": {
+          "package_name": "com.carrasco.caminante"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447956817552-kvp1dn8551cgmtj630rp9p9pc0t3qi5l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carrasco.caminante",
+            "certificate_hash": "67af4e1404716015a0d4317e11e6cf5c9ae06799"
+          }
+        },
+        {
+          "client_id": "447956817552-dlsse46tl88dv15163hd9f46avp2oukn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9LF-_mhD-UU8RK261d7ZrSZOPz-J7log"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447956817552-dlsse46tl88dv15163hd9f46avp2oukn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
