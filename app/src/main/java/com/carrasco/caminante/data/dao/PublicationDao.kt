@@ -1,20 +1,20 @@
 package com.carrasco.caminante.data.dao
 
+
 import com.carrasco.caminante.data.model.Publication
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await
+import com.google.firebase.firestore.ktx.snapshots
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 abstract class PublicationDao {
     companion object{
-        fun getAll(): List<Publication>{
-            val publicationList: MutableList<Publication> = mutableListOf()
-            FirebaseFirestore.getInstance().collection("publication")
-                .get().addOnSuccessListener { documents ->
-                    for(document in documents){
-                        publicationList.add(document.toObject(Publication::class.java))
-                    }
-            }
-            return publicationList
+        fun getAll(): Flow<List<Publication>> {
+            return FirebaseFirestore.getInstance()
+                .collection("publication")
+                .snapshots().map { snapshot ->
+                    snapshot.toObjects(Publication::class.java)
+                }
         }
     }
 }
