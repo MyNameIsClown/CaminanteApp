@@ -7,7 +7,7 @@ import com.carrasco.caminante.data.model.Publication
 import com.carrasco.caminante.databinding.ViewPublicationBinding
 import com.carrasco.caminante.loadUrl
 
-class PublicationAdapter()
+class PublicationAdapter(val listener: (Publication) -> Unit)
     : RecyclerView.Adapter<PublicationAdapter.ViewHolder>(){
 
     var publicationList: List<Publication> = emptyList()
@@ -18,7 +18,13 @@ class PublicationAdapter()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(publicationList[position])
+        val publication = publicationList[position]
+
+        holder.bind(publication)
+
+        holder.itemView.setOnClickListener{
+            listener(publication)
+        }
     }
 
     override fun getItemCount(): Int = publicationList.size
