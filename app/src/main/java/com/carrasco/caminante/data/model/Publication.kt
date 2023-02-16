@@ -12,7 +12,7 @@ data class Publication(
     val description: String?= "",
     val category: String?= "",
     val route: String?= "",
-    val imageURL: String?= "",
+    val imageURL: String?= "https://vivecamino.com/img/noti/av/simbolos-camino-santiago_595.jpg",
     val publicationDate: Timestamp?= Timestamp(0,0),
     val latitude: Double?=0.0,
     val longitude: Double?=0.0

@@ -31,11 +31,10 @@ class PublicationAdapter(val listener: (Publication) -> Unit)
 
     class ViewHolder(val binding: ViewPublicationBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(publication: Publication){
-            if(publication.imageURL!!.isEmpty()){
+            if(publication.imageURL == null || publication.imageURL.isEmpty()){
                 binding.publicationImage.loadUrl("https://vivecamino.com/img/noti/av/simbolos-camino-santiago_595.jpg")
             }else{
                 binding.publicationImage.loadUrl(publication.imageURL)
-
             }
             binding.publicationTitle.text = publication.title
             binding.publicationCategory.text = publication.category

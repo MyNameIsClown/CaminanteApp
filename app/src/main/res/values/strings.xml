@@ -2,4 +2,25 @@
     <string name="app_name">Caminante</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="categories">
+        <item>Social</item>
+        <item>Food</item>
+        <item>Tips</item>
+        <item>Warning</item>
+        <item>Landscape</item>
+    </string-array>
+    <string-array name="routes">
+        <item>Camino Frances</item>
+        <item>Camino de Fisterra y Muxia</item>
+        <item>Via de la Plata</item>
+        <item>Camino Ingles</item>
+        <item>Camino Primitivo</item>
+        <item>Camino del Norte</item>
+        <item>Camino Portugues</item>
+        <item>Camino Portugues por la costa</item>
+        <item>Camino de Invierno</item>
+        <item>Camino Sanabrés</item>
+        <item>Camino Aragonés</item>
+        <item>Camino Vasco interior</item>
+    </string-array>
 </resources>
