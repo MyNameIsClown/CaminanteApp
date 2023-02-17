@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.carrasco.caminante.data.dao.UserDao
 import com.carrasco.caminante.data.model.Publication
+import com.carrasco.caminante.data.model.User
+import com.google.firebase.auth.FirebaseAuth
 
 class DetailViewModel(publication: Publication): ViewModel() {
     private val _publication = MutableLiveData(publication)
@@ -16,5 +19,4 @@ class DetailViewModelFactory(private val publication: Publication): ViewModelPro
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return DetailViewModel(publication) as T
     }
-
 }

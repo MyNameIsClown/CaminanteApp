@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Publication(
+    var id: String?= "",
     val title: String?= "",
     val description: String?= "",
     val category: String?= "",
@@ -18,7 +19,7 @@ data class Publication(
     val longitude: Double?=0.0
 ):Parcelable{
     override fun toString(): String {
-        return "Publication(title=$title, description=$description, category=$category, route=$route, \n" +
+        return "Publication(id=$id, title=$title, description=$description, category=$category, route=$route, \n" +
         "imageURL=$imageURL, publicationDate=$publicationDate, locationCoordinates=$latitude, $longitude)"
     }
 }

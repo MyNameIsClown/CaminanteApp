@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import com.carrasco.caminante.R
+import com.carrasco.caminante.data.dao.UserDao
+import com.carrasco.caminante.data.model.Publication
+import com.carrasco.caminante.data.model.User
 import com.carrasco.caminante.databinding.ActivityLoginBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
@@ -28,6 +31,9 @@ class LoginActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(
                     email.toString(), password.toString()).addOnCompleteListener{
                     if(it.isSuccessful){
+                        UserDao.save(
+                            User(email.toString(), mutableListOf())
+                        )
                         startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                     }else{
                         showAlert()

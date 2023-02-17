@@ -3,6 +3,7 @@ package com.carrasco.caminante.ui.detail
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +11,17 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.carrasco.caminante.R
+import com.carrasco.caminante.data.dao.UserDao
 import com.carrasco.caminante.data.model.Publication
+import com.carrasco.caminante.data.model.User
 import com.carrasco.caminante.databinding.FragmentDetailBinding
 import com.carrasco.caminante.loadUrl
+import com.carrasco.caminante.toast
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
@@ -42,6 +49,11 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             binding.publicationDesciption.text = publication.description
             binding.publicationRoute.text = publication.route
             binding.publicationCategory.text = publication.category
+        }
+
+        binding.favButton.setOnClickListener{
+            Log.d("Añadiendo Publicacion", viewModel.publication.value!!.toString())
+            UserDao.savePublication(viewModel.publication.value!!, requireContext())
         }
     }
 }
