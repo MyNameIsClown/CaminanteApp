@@ -2,6 +2,10 @@ package com.carrasco.caminante.ui.detail
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,7 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.res.colorResource
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.carrasco.caminante.R
@@ -31,6 +38,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     companion object{
         const val EXTRA_PUBLICATION = "DetailActivity:Publication"
     }
+    private var isSaved: Boolean = false
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,11 +57,36 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             binding.publicationDesciption.text = publication.description
             binding.publicationRoute.text = publication.route
             binding.publicationCategory.text = publication.category
+            viewLifecycleOwner.lifecycleScope.launch{
+                isSaved = UserDao.isSaved(publication)
+                if(isSaved){
+                    Log.d("Detail Fragment", "Cambiando color")
+                    binding.favButton.drawable.setColorFilter(ContextCompat.getColor(requireContext(), R.color.amarilloPantone), PorterDuff.Mode.SRC_IN)
+                }
+            }
         }
 
         binding.favButton.setOnClickListener{
-            Log.d("Añadiendo Publicacion", viewModel.publication.value!!.toString())
-            UserDao.savePublication(viewModel.publication.value!!, requireContext())
+            val publication = viewModel.publication.value!!
+            viewLifecycleOwner.lifecycleScope.launch{
+                isSaved = UserDao.isSaved(publication)
+            }
+            if(isSaved){
+                Log.d("Detail Fragment", "Cambiando color")
+                requireContext().toast("Publicacion ya guardada")
+            }else{
+                Log.d("Añadiendo Publicacion", publication.toString())
+                UserDao.savePublication(publication, requireContext())
+                binding.favButton.drawable.setColorFilter(ContextCompat.getColor(requireContext(), R.color.amarilloPantone), PorterDuff.Mode.SRC_IN)
+            }
+        }
+
+        binding.ubicacion.setOnClickListener{
+            val publication = viewModel.publication.value!!
+            val gmmIntentUri = Uri.parse("geo:${publication.latitude},${publication.longitude}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
         }
     }
 }

@@ -9,11 +9,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="1"
         tools:itemCount="10"
-        tools:listitem="@layout/view_publication"/>
+        tools:listitem="@layout/view_publication" />
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progress"
@@ -36,15 +36,17 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="#37E418"
-            app:srcCompat="@android:drawable/ic_menu_add" />
+            app:tint="@color/white"
+            android:background="@color/azulPantone"
+            app:srcCompat="@android:drawable/ic_menu_add"/>
 
         <ImageButton
             android:id="@+id/profileButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="#EC2929"
+            app:tint="@color/black"
+            android:background="@color/amarilloPantone"
             app:srcCompat="?android:attr/fingerprintAuthDrawable" />
     </LinearLayout>
 

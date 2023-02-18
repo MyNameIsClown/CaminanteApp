@@ -27,8 +27,11 @@ import com.carrasco.caminante.databinding.FragmentCreatePublicationBinding
 import com.carrasco.caminante.toast
 import com.google.firebase.Timestamp
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
+import com.carrasco.caminante.ui.detail.DetailFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
@@ -42,7 +45,7 @@ class CreatePublicationFragment : Fragment() {
     private var _binding: FragmentCreatePublicationBinding? = null
     private val binding get() = _binding!!
     private var localImageUri : Uri? = Uri.EMPTY
-    private var remoteImageUri : Uri? = Uri.EMPTY
+    private var remoteImageUri : Uri? = Uri.parse("https://vivecamino.com/img/noti/av/simbolos-camino-santiago_595.jpg")
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
@@ -96,19 +99,27 @@ class CreatePublicationFragment : Fragment() {
             val description = binding.descriptionInput.text.toString()
             val category = binding.categoryInput.selectedItem.toString()
             val route = binding.routeInput.selectedItem.toString()
-            viewModel.viewModelScope.launch {
-                val location = getCurrentLocation(requireContext())
-                if(localImageUri!=Uri.EMPTY||localImageUri!=null){
-                    remoteImageUri = PublicationDao.uploadImage(localImageUri!!)
-                }
-                PublicationDao.save(
-                    Publication(
-                        null,title, description, category, route, remoteImageUri.toString(),
-                        Timestamp.now(), location?.latitude, location?.longitude
+            if (title.isEmpty()||description.isEmpty()){
+                requireContext().toast("El campo Titulo y el campo necesitan un valor")
+            }else{
+                viewModel.viewModelScope.launch {
+                    val location = getCurrentLocation(requireContext())
+                    if(localImageUri!=Uri.EMPTY&&localImageUri!=null){
+                        remoteImageUri = PublicationDao.uploadImage(localImageUri!!)
+                    }
+                    PublicationDao.save(
+                        Publication(
+                            null,title, description, category, route, remoteImageUri.toString(),
+                            Timestamp.now(), location?.latitude, location?.longitude
+                        )
                     )
+                }
+                requireContext().toast("Publicando")
+                Thread.sleep(1000)
+                findNavController().navigate(
+                    R.id.action_createPublicationFragment_to_mainFragment
                 )
             }
-            requireContext().toast("Publicando")
         }
     }
     private val startForActivityImage = registerForActivityResult(

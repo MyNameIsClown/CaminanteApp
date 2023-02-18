@@ -20,8 +20,13 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="30sp"
-        android:gravity="center"/>
-
+        android:textColor="@color/azulPantone"
+        android:gravity="center"
+        android:textStyle="bold"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,30 +36,55 @@
             android:id="@+id/publicationRoute"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/publicationCategory"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
             android:text="TextView" />
 
     </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"/>
 
     <TextView
         android:id="@+id/publicationDesciption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:text="TextView"/>
 
-    <ImageButton
-        android:id="@+id/favButton"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_gravity="right"
-        android:backgroundTint="@color/amarilloPantone"
-        android:src="@android:drawable/btn_star"
-        app:tint="@color/azulPantone" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right">
+
+        <ImageButton
+            android:id="@+id/ubicacion"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@color/amarilloPantone"
+            app:tint="@color/azulPantone"
+            android:src="@android:drawable/ic_dialog_map" />
+
+        <ImageButton
+            android:id="@+id/favButton"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_gravity="right"
+            android:background="#8A8A8A"
+            android:src="@android:drawable/btn_star"
+            app:tint="@color/azulPantone" />
+    </LinearLayout>
 
 </LinearLayout>

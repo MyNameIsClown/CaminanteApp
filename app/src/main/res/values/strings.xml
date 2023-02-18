@@ -10,6 +10,7 @@
         <item>Landscape</item>
     </string-array>
     <string-array name="routes">
+        <item>Sin Camino</item>
         <item>Camino Frances</item>
         <item>Camino de Fisterra y Muxia</item>
         <item>Via de la Plata</item>

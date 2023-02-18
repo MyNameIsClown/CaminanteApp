@@ -10,8 +10,10 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObjects
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.asDeferred
 import kotlinx.coroutines.tasks.await
 
 abstract class UserDao {
@@ -38,7 +40,7 @@ abstract class UserDao {
             }
         }
 
-        suspend fun getSavedPublications(): Flow<List<Publication>> = flow{
+        suspend fun getSavedPublications(): Flow<List<Publication>> = flow {
             val db = FirebaseFirestore.getInstance()
             val userQuery = db.collection("user").whereEqualTo("email", getCurrentUserEmail())
             val userSnap = userQuery.get().await()
@@ -46,13 +48,21 @@ abstract class UserDao {
             if (savedPublicationRefs == null || savedPublicationRefs.isEmpty()) {
                 emit(emptyList<Publication>())
             } else {
-                val publicaciones = db.collection("publication")
-                    .whereIn(FieldPath.documentId(), savedPublicationRefs)
-                    .get().await().toObjects(Publication::class.java)
-                Log.d("Publications result", publicaciones.toString())
-                emit(publicaciones)
+                val publicationChunks = savedPublicationRefs.chunked(10)
+                val publicationRequests = publicationChunks.map { chunk ->
+                    db.collection("publication")
+                        .whereIn(FieldPath.documentId(), chunk)
+                        .get()
+                        .asDeferred()
+                }
+                val publicationSnapshots = awaitAll(*publicationRequests.toTypedArray())
+                val publications = publicationSnapshots.flatMap { snapshot ->
+                    snapshot.toObjects(Publication::class.java)
+                }
+                emit(publications)
             }
         }
+
 
         fun getCurrentUserEmail(): String{
             return FirebaseAuth.getInstance().currentUser?.email!!
@@ -66,8 +76,10 @@ abstract class UserDao {
                     // Manejar los resultados de la consulta
                     if (!querySnapshot.isEmpty) {
                         val documento = querySnapshot.documents[0] // Obtener el primer documento que coincide con la consulta
-                        val publicacionesGuardadas = documento.get("savedPublication") as ArrayList<String> // Obtener el array de publicaciones guardadas
-                        publicacionesGuardadas.add(publication.id!!) // Agregar un nuevo valor al array
+                        val publicacionesGuardadas = documento.get("savedPublication") as ArrayList<String>// Obtener el array de publicaciones guardadas
+                        if(!publication.id!!.isEmpty()){
+                            publicacionesGuardadas.add(publication.id!!) // Agregar un nuevo valor al array
+                        }
                         documento.reference.update("savedPublication", publicacionesGuardadas) // Actualizar el documento en Firestore con el nuevo valor
                         context.toast("Publicacion guardada")
                     }
@@ -76,6 +88,27 @@ abstract class UserDao {
                     Log.e("Publication save error", exception.toString())
                 }
 
+        }
+        suspend fun isSaved(publication: Publication): Boolean{
+            var result = false
+            val db = FirebaseFirestore.getInstance()
+            val userQuery = db.collection("user").whereEqualTo("email", getCurrentUserEmail())
+            userQuery.get()
+                .addOnSuccessListener { querySnapshot ->
+                    // Manejar los resultados de la consulta
+                    if (!querySnapshot.isEmpty) {
+                        val documento = querySnapshot.documents[0] // Obtener el primer documento que coincide con la consulta
+                        val publicacionesGuardadas = documento.get("savedPublication") as ArrayList<String> // Obtener el array de publicaciones guardadas
+                        Log.d("isSaved", publicacionesGuardadas.toString())
+                        if(publicacionesGuardadas.contains(publication.id)){
+                            Log.d("isSaved", "in condition")
+                            Log.d("isSaved", publication.id.toString())
+                            result = true
+                        }
+                    }
+                }.await()
+            Log.d("isSaved", result.toString())
+            return result
         }
     }
 }

@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.carrasco.caminante.R
+import com.carrasco.caminante.data.dao.UserDao
 import com.carrasco.caminante.databinding.FragmentProfileBinding
 import com.carrasco.caminante.databinding.FragmentPublicationListBinding
 import com.carrasco.caminante.ui.MainViewModel
@@ -31,6 +32,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view).apply {
+            userEmail.text = UserDao.getCurrentUserEmail()
             recycler.adapter = adapter
         }
         viewModel.state.observe(viewLifecycleOwner){state ->

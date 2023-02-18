@@ -7,44 +7,38 @@
     android:orientation="vertical"
     tools:context=".ui.profile.ProfileFragment">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:background="@color/azulPantone"
+        app:srcCompat="@drawable/ic_stat_name" />
+
+    <TextView
+        android:id="@+id/userEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/profileImage"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:background="@color/azulPantone"
-            app:srcCompat="@drawable/ic_stat_name" />
-
-        <TextView
-            android:id="@+id/userEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/userUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-    </LinearLayout>
+        android:text="email@email.com"
+        android:textAlignment="center"
+        android:textColor="@color/amarilloPantone"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/publicacionesGuardadas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Publicaciones guardadas" />
+        android:text="Publicaciones guardadas"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textAlignment="center"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:itemCount="10"
         tools:listitem="@layout/view_publication"
         app:spanCount="1"
